@@ -3,6 +3,9 @@
 
 [Latest release download](https://api.github.com/repos/ucnl/UGPSHub/zipball)
 
+Main window view:  
+![main window view](https://github.com/ucnl/UGPSHub/blob/main/pics/ugpshub_scshot.png)
+
 More information about RedWAVE/DiveNET GPS Underwater GPS:  
 
 - [in English](https://docs.unavlab.com/navigation_and_tracking_systems_en.html#redwave)
