@@ -13,6 +13,7 @@ using UCNLKML;
 using UCNLNav;
 using UCNLNMEA;
 using UCNLUI.Dialogs;
+using uOSM;
 
 namespace UGPSHub
 {
@@ -24,11 +25,14 @@ namespace UGPSHub
 
         TSLogProvider logger;
         SimpleSettingsProviderXML<SettingsContainer> settingsProvider;
+        uOSMTileProvider tProvider;
+
 
         string settingsFileName;
         string logPath;
         string logFileName;
         string snapshotsPath;
+        string tileDBPath;
 
         bool isRestart = false;
         bool isAutoscreenshot = false;
@@ -47,6 +51,8 @@ namespace UGPSHub
             }
         }
 
+        bool isScreenshotsNamesByTime = true;
+        int sc_num = 0;
 
         Dictionary<string, List<GeoPoint3DETm>> tracks = new Dictionary<string, List<GeoPoint3DETm>>();        
 
@@ -65,6 +71,7 @@ namespace UGPSHub
             logPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "LOG");
             logFileName = StrUtils.GetTimeDirTreeFileName(startTime, Application.ExecutablePath, "LOG", "log", true);
             snapshotsPath = StrUtils.GetTimeDirTree(startTime, Application.ExecutablePath, "SCREENSHOTS", false);
+            tileDBPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Cache\\Tiles\\");
 
             #endregion
 
@@ -106,17 +113,47 @@ namespace UGPSHub
 
             #region custom UI
 
-            geoPlot.AddTrack("UNR (RAW)", Color.Yellow, 1, 2, settingsProvider.Data.NumberOfPointsToShow, true);
-            geoPlot.AddTrack("UNR (FLT)", Color.Lime, 1, 2, settingsProvider.Data.NumberOfPointsToShow, true);
-            if (settingsProvider.Data.IsUseAUXGNSS)
-                geoPlot.AddTrack("AUX GNSS", Color.Cyan, 1, 2, 64, true);
-            geoPlot.AddTrack("Marked", Color.Magenta, 1, 6, 256, false);
+            isScreenshotsNamesByTime = settingsProvider.Data.IsScreenshotsNamingByTime;
 
-            geoPlot.AddTrack("BASE 1", Color.Salmon, 3, 8, 4, false);
-            geoPlot.AddTrack("BASE 2", Color.Gold, 3, 8, 4, false);
-            geoPlot.AddTrack("BASE 3", Color.MediumSpringGreen, 3, 8, 4, false);
-            geoPlot.AddTrack("BASE 4", Color.SkyBlue, 3, 8, 4, false);
+            List<string> trackNames = new List<string>();
+            trackNames.Add("ALL");
+            trackNames.Add("UNR (FLT)");
+            trackNames.Add("UNR (FLT)+Marked");            
+
+            geoPlot.InitTrack("UNR (RAW)", 64, Color.Orange, 1, 4, true, Color.Yellow, 1, 200);
+            geoPlot.InitTrack("UNR (FLT)", settingsProvider.Data.NumberOfPointsToShow, Color.Red, 1, 4, true, Color.Red, 1, 200);
+
+            if (settingsProvider.Data.IsUseAUXGNSS)
+            {
+                geoPlot.InitTrack("AUX GNSS", 64, Color.Blue, 1, 4, true, Color.Blue, 1, 200);                
+                trackNames.Add("AUX GNSS");
+                trackNames.Add("UNR (FLT)+AUX GNSS");
+                trackNames.Add("UNR (FLT)+Marked+AUX GNSS");
+            }
+
+            geoPlot.InitTrack("Marked", 256, Color.Black, 4, 4, false, Color.Black, 1, 200);
+
+            geoPlot.InitTrack("BASE 1", 4, Color.DarkRed, 2, 4, false, Color.Salmon, 1, 200);
+            geoPlot.InitTrack("BASE 2", 4, Color.DarkOrange, 2, 4, false, Color.Gold, 1, 200);
+            geoPlot.InitTrack("BASE 3", 4, Color.Green, 2, 4, false, Color.MediumSpringGreen, 1, 200);
+            geoPlot.InitTrack("BASE 4", 4, Color.Purple, 2, 4, false, Color.SkyBlue, 1, 200);
+
+            tracksToFitCbx.Items.Clear();
+            tracksToFitCbx.Items.AddRange(trackNames.ToArray());
+            tracksToFitCbx.SelectedIndex = 0;
+
+            geoPlot.SetTracksVisibility(true);
+            geoPlot.TextBackgroundColor = Color.FromArgb(127, Color.White);
+
+            geoPlot.HistoryVisible = true;
             
+            #endregion
+
+            #region tProvider
+
+            tProvider = new uOSMTileProvider(256, 19, new Size(256, 256), tileDBPath, settingsProvider.Data.TileServers);
+            geoPlot.ConnectTileProvider(tProvider);
+
             #endregion
             
             #region core
@@ -128,7 +165,8 @@ namespace UGPSHub
                 System.IO.Ports.StopBits.One, 
                 System.IO.Ports.Handshake.None),
                 settingsProvider.Data.CourseEstimatorFIFOSize,
-                settingsProvider.Data.TrackFilterFIFOSize);
+                settingsProvider.Data.TrackFilterFIFOSize,
+                settingsProvider.Data.MaxDistToResetTrackSmoother_m);
 
             core.SalinityPSU = settingsProvider.Data.Salinity_psu;
 
@@ -174,6 +212,13 @@ namespace UGPSHub
                     var aText = core.GetAmbInfo();
                     if (!string.IsNullOrEmpty(aText))
                         sb.AppendFormat("\r\n M̲I̲S̲C̲\r\n{0}", aText);
+
+                    if (core.IsStatistics)
+                    {
+                        var sText = core.GetStatistics();
+                        if (!string.IsNullOrEmpty(sText))
+                            sb.AppendFormat("\r\n S̲T̲A̲T̲I̲S̲T̲I̲C̲S̲\r\n{0}", sText);
+                    }
 
                     InvokeSetLeftUpperCornerTextPlot(sb.ToString(), true);
                     InvokeSetStatusStripLblText(secondaryStatusStrip, buoysStatusLbl, core.GetBasesDescription());
@@ -230,11 +275,11 @@ namespace UGPSHub
             if (geoPlot.InvokeRequired)
                 geoPlot.Invoke((MethodInvoker)delegate 
                 { 
-                    geoPlot.AppendHistoryLine(line);
+                    geoPlot.AppendHistory(line);
                 });
             else
             {
-                geoPlot.AppendHistoryLine(line);
+                geoPlot.AppendHistory(line);
             }
         }
 
@@ -297,9 +342,9 @@ namespace UGPSHub
                 geoPlot.Invoke((MethodInvoker)delegate
                 {
                     if (!double.IsNaN(e.Course_deg))
-                        geoPlot.UpdateTrack(e.TrackID, e.TrackPoint.Latitude, e.TrackPoint.Longitude, e.Course_deg);
+                        geoPlot.AddPoint(e.TrackID, e.TrackPoint.Latitude, e.TrackPoint.Longitude, e.Course_deg);
                     else
-                        geoPlot.UpdateTrack(e.TrackID, e.TrackPoint.Latitude, e.TrackPoint.Longitude);
+                        geoPlot.AddPoint(e.TrackID, e.TrackPoint.Latitude, e.TrackPoint.Longitude);
 
                     if (isInvalidate)
                         geoPlot.Invalidate();
@@ -308,9 +353,9 @@ namespace UGPSHub
             else
             {
                 if (!double.IsNaN(e.Course_deg))
-                    geoPlot.UpdateTrack(e.TrackID, e.TrackPoint.Latitude, e.TrackPoint.Longitude, e.Course_deg);
+                    geoPlot.AddPoint(e.TrackID, e.TrackPoint.Latitude, e.TrackPoint.Longitude, e.Course_deg);
                 else
-                    geoPlot.UpdateTrack(e.TrackID, e.TrackPoint.Latitude, e.TrackPoint.Longitude);
+                    geoPlot.AddPoint(e.TrackID, e.TrackPoint.Latitude, e.TrackPoint.Longitude);
 
                 if (isInvalidate)
                     geoPlot.Invalidate();
@@ -322,13 +367,13 @@ namespace UGPSHub
             if (geoPlot.InvokeRequired)
                 geoPlot.Invoke((MethodInvoker)delegate
                 {
-                    geoPlot.LeftUpperCornerText = text;
+                    geoPlot.LeftUpperText = text;
                     if (isInvalidate)
                         geoPlot.Invalidate();
                 });
             else
             {
-                geoPlot.LeftUpperCornerText = text;
+                geoPlot.LeftUpperText = text;
                 if (isInvalidate)
                     geoPlot.Invalidate();
             }
@@ -363,7 +408,10 @@ namespace UGPSHub
                 if (!Directory.Exists(snapshotsPath))
                     Directory.CreateDirectory(snapshotsPath);
 
-                target.Save(Path.Combine(snapshotsPath, string.Format("{0}.{1}", StrUtils.GetHMSString(), ImageFormat.Png)));
+                if (isScreenshotsNamesByTime)
+                    target.Save(Path.Combine(snapshotsPath, string.Format("{0}.{1}", StrUtils.GetHMSString(), ImageFormat.Png)));
+                else
+                    target.Save(Path.Combine(snapshotsPath, string.Format("{0}.{1}", sc_num++, ImageFormat.Png)));                
             }
             catch
             {
@@ -798,7 +846,35 @@ namespace UGPSHub
 
         private void markCurrentPositionBtn_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            core.MarkPosition();
+        }
+
+        private void tracksToFitCbx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var trackNames = tracksToFitCbx.SelectedItem.ToString();
+            if (trackNames == "ALL")
+            {
+                geoPlot.SetTracksVisibility(true);
+            }
+            else
+            {
+                var splits = trackNames.Split(new char[] { '+' });
+                geoPlot.SetTracksVisibility(splits, true);
+            }
+
+            geoPlot.Invalidate();
+        }
+
+        private void isHistoryVisibleBtn_Click(object sender, EventArgs e)
+        {
+            geoPlot.HistoryVisible = !geoPlot.HistoryVisible;
+            isHistoryVisibleBtn.Checked = geoPlot.HistoryVisible;
+        }
+
+        private void isStatisticsBtn_Click(object sender, EventArgs e)
+        {
+            core.IsStatistics = !core.IsStatistics;
+            isStatisticsBtn.Checked = core.IsStatistics;
         }
 
         #endregion

@@ -63,6 +63,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.restoreDefaultsBtn = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.isScreenshotsNamingByTime = new System.Windows.Forms.CheckBox();
             this.connectionTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radialErrorThresholdEdit)).BeginInit();
@@ -77,7 +79,7 @@
             // 
             this.cancelBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelBtn.Location = new System.Drawing.Point(469, 535);
+            this.cancelBtn.Location = new System.Drawing.Point(469, 579);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(113, 42);
             this.cancelBtn.TabIndex = 0;
@@ -89,7 +91,7 @@
             this.okBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okBtn.Enabled = false;
-            this.okBtn.Location = new System.Drawing.Point(321, 535);
+            this.okBtn.Location = new System.Drawing.Point(321, 579);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(113, 42);
             this.okBtn.TabIndex = 1;
@@ -322,9 +324,12 @@
             this.tableLayoutPanel1.Controls.Add(this.trackViewFIFOSizeEdit, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label5, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.isScreenshotsNamingByTime, 1, 7);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(13, 232);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 8;
+            this.tableLayoutPanel1.RowCount = 9;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -333,13 +338,13 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(569, 279);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(569, 319);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // radialErrorThresholdEdit
             // 
             this.radialErrorThresholdEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radialErrorThresholdEdit.Location = new System.Drawing.Point(251, 111);
+            this.radialErrorThresholdEdit.Location = new System.Drawing.Point(257, 111);
             this.radialErrorThresholdEdit.Maximum = new decimal(new int[] {
             50,
             0,
@@ -351,7 +356,7 @@
             0,
             0});
             this.radialErrorThresholdEdit.Name = "radialErrorThresholdEdit";
-            this.radialErrorThresholdEdit.Size = new System.Drawing.Size(114, 34);
+            this.radialErrorThresholdEdit.Size = new System.Drawing.Size(108, 34);
             this.radialErrorThresholdEdit.TabIndex = 7;
             this.radialErrorThresholdEdit.Value = new decimal(new int[] {
             1,
@@ -365,7 +370,7 @@
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label8.Location = new System.Drawing.Point(3, 108);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(242, 40);
+            this.label8.Size = new System.Drawing.Size(248, 40);
             this.label8.TabIndex = 6;
             this.label8.Text = "Radial error threshold, m";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -389,7 +394,7 @@
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Location = new System.Drawing.Point(3, 28);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(242, 40);
+            this.label6.Size = new System.Drawing.Size(248, 40);
             this.label6.TabIndex = 0;
             this.label6.Text = "Salinity, PSU";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -398,14 +403,14 @@
             // 
             this.salinityEdit.DecimalPlaces = 1;
             this.salinityEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.salinityEdit.Location = new System.Drawing.Point(251, 31);
+            this.salinityEdit.Location = new System.Drawing.Point(257, 31);
             this.salinityEdit.Maximum = new decimal(new int[] {
             42,
             0,
             0,
             0});
             this.salinityEdit.Name = "salinityEdit";
-            this.salinityEdit.Size = new System.Drawing.Size(114, 34);
+            this.salinityEdit.Size = new System.Drawing.Size(108, 34);
             this.salinityEdit.TabIndex = 1;
             // 
             // speedOfSoundLbl
@@ -414,7 +419,7 @@
             this.speedOfSoundLbl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.speedOfSoundLbl.Location = new System.Drawing.Point(3, 68);
             this.speedOfSoundLbl.Name = "speedOfSoundLbl";
-            this.speedOfSoundLbl.Size = new System.Drawing.Size(242, 40);
+            this.speedOfSoundLbl.Size = new System.Drawing.Size(248, 40);
             this.speedOfSoundLbl.TabIndex = 2;
             this.speedOfSoundLbl.Text = "Speed of sound, m/s";
             this.speedOfSoundLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -423,7 +428,7 @@
             // 
             this.speedOfSoundEdit.DecimalPlaces = 1;
             this.speedOfSoundEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.speedOfSoundEdit.Location = new System.Drawing.Point(251, 71);
+            this.speedOfSoundEdit.Location = new System.Drawing.Point(257, 71);
             this.speedOfSoundEdit.Maximum = new decimal(new int[] {
             1600,
             0,
@@ -435,7 +440,7 @@
             0,
             0});
             this.speedOfSoundEdit.Name = "speedOfSoundEdit";
-            this.speedOfSoundEdit.Size = new System.Drawing.Size(114, 34);
+            this.speedOfSoundEdit.Size = new System.Drawing.Size(108, 34);
             this.speedOfSoundEdit.TabIndex = 3;
             this.speedOfSoundEdit.Value = new decimal(new int[] {
             1450,
@@ -463,7 +468,7 @@
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label9.Location = new System.Drawing.Point(3, 148);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(242, 40);
+            this.label9.Size = new System.Drawing.Size(248, 40);
             this.label9.TabIndex = 8;
             this.label9.Text = "Course estimator FIFO size";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -471,7 +476,7 @@
             // crsEstimatorFIFOSizeEdit
             // 
             this.crsEstimatorFIFOSizeEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crsEstimatorFIFOSizeEdit.Location = new System.Drawing.Point(251, 151);
+            this.crsEstimatorFIFOSizeEdit.Location = new System.Drawing.Point(257, 151);
             this.crsEstimatorFIFOSizeEdit.Maximum = new decimal(new int[] {
             32,
             0,
@@ -483,7 +488,7 @@
             0,
             0});
             this.crsEstimatorFIFOSizeEdit.Name = "crsEstimatorFIFOSizeEdit";
-            this.crsEstimatorFIFOSizeEdit.Size = new System.Drawing.Size(114, 34);
+            this.crsEstimatorFIFOSizeEdit.Size = new System.Drawing.Size(108, 34);
             this.crsEstimatorFIFOSizeEdit.TabIndex = 9;
             this.crsEstimatorFIFOSizeEdit.Value = new decimal(new int[] {
             8,
@@ -497,7 +502,7 @@
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label10.Location = new System.Drawing.Point(3, 188);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(242, 40);
+            this.label10.Size = new System.Drawing.Size(248, 40);
             this.label10.TabIndex = 10;
             this.label10.Text = "Track filter FIFO size";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -505,7 +510,7 @@
             // trackFilterFIFOSizeEdit
             // 
             this.trackFilterFIFOSizeEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trackFilterFIFOSizeEdit.Location = new System.Drawing.Point(251, 191);
+            this.trackFilterFIFOSizeEdit.Location = new System.Drawing.Point(257, 191);
             this.trackFilterFIFOSizeEdit.Maximum = new decimal(new int[] {
             32,
             0,
@@ -517,7 +522,7 @@
             0,
             0});
             this.trackFilterFIFOSizeEdit.Name = "trackFilterFIFOSizeEdit";
-            this.trackFilterFIFOSizeEdit.Size = new System.Drawing.Size(114, 34);
+            this.trackFilterFIFOSizeEdit.Size = new System.Drawing.Size(108, 34);
             this.trackFilterFIFOSizeEdit.TabIndex = 11;
             this.trackFilterFIFOSizeEdit.Value = new decimal(new int[] {
             4,
@@ -531,7 +536,7 @@
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label11.Location = new System.Drawing.Point(3, 228);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(242, 40);
+            this.label11.Size = new System.Drawing.Size(248, 40);
             this.label11.TabIndex = 12;
             this.label11.Text = "Track view FIFO size";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -539,7 +544,7 @@
             // trackViewFIFOSizeEdit
             // 
             this.trackViewFIFOSizeEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trackViewFIFOSizeEdit.Location = new System.Drawing.Point(251, 231);
+            this.trackViewFIFOSizeEdit.Location = new System.Drawing.Point(257, 231);
             this.trackViewFIFOSizeEdit.Maximum = new decimal(new int[] {
             512,
             0,
@@ -551,7 +556,7 @@
             0,
             0});
             this.trackViewFIFOSizeEdit.Name = "trackViewFIFOSizeEdit";
-            this.trackViewFIFOSizeEdit.Size = new System.Drawing.Size(114, 34);
+            this.trackViewFIFOSizeEdit.Size = new System.Drawing.Size(108, 34);
             this.trackViewFIFOSizeEdit.TabIndex = 13;
             this.trackViewFIFOSizeEdit.Value = new decimal(new int[] {
             256,
@@ -566,7 +571,7 @@
             this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(242, 28);
+            this.label4.Size = new System.Drawing.Size(248, 28);
             this.label4.TabIndex = 14;
             this.label4.Text = "Parameter";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -576,9 +581,9 @@
             this.label5.AutoSize = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(251, 0);
+            this.label5.Location = new System.Drawing.Point(257, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(114, 28);
+            this.label5.Size = new System.Drawing.Size(108, 28);
             this.label5.TabIndex = 15;
             this.label5.Text = "Value";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -586,7 +591,7 @@
             // restoreDefaultsBtn
             // 
             this.restoreDefaultsBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.restoreDefaultsBtn.Location = new System.Drawing.Point(11, 535);
+            this.restoreDefaultsBtn.Location = new System.Drawing.Point(11, 579);
             this.restoreDefaultsBtn.Name = "restoreDefaultsBtn";
             this.restoreDefaultsBtn.Size = new System.Drawing.Size(113, 42);
             this.restoreDefaultsBtn.TabIndex = 4;
@@ -594,11 +599,32 @@
             this.restoreDefaultsBtn.UseVisualStyleBackColor = true;
             this.restoreDefaultsBtn.Click += new System.EventHandler(this.restoreDefaultsBtn_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label7.Location = new System.Drawing.Point(3, 268);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(248, 28);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Screenshots names by time";
+            // 
+            // isScreenshotsNamingByTime
+            // 
+            this.isScreenshotsNamingByTime.AutoSize = true;
+            this.isScreenshotsNamingByTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.isScreenshotsNamingByTime.Location = new System.Drawing.Point(257, 271);
+            this.isScreenshotsNamingByTime.Name = "isScreenshotsNamingByTime";
+            this.isScreenshotsNamingByTime.Size = new System.Drawing.Size(108, 22);
+            this.isScreenshotsNamingByTime.TabIndex = 17;
+            this.isScreenshotsNamingByTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.isScreenshotsNamingByTime.UseVisualStyleBackColor = true;
+            // 
             // SettingsEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 28F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(594, 589);
+            this.ClientSize = new System.Drawing.Size(594, 633);
             this.Controls.Add(this.restoreDefaultsBtn);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.refreshPortsBtn);
@@ -662,5 +688,7 @@
         private System.Windows.Forms.Button restoreDefaultsBtn;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox isScreenshotsNamingByTime;
     }
 }

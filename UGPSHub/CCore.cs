@@ -131,7 +131,7 @@ namespace UGPSHub
 
     #endregion
 
-    public class CCore
+    public class CCore : IDisposable
     {
         #region Properties
 
@@ -303,6 +303,11 @@ namespace UGPSHub
 
         AgingValue<BaseState> BaseStates;
 
+        AgingValue<double> CEP;
+        AgingValue<double> DRMS;
+        AgingValue<double> DRMS2;
+        AgingValue<double> DRMS3;
+
         delegate T NullChecker<T>(object parameter);
         delegate object NullCheckerR<T>(T parameter);
         NullChecker<int> intNullChecker = (x => x == null ? -1 : (int)x);
@@ -351,12 +356,34 @@ namespace UGPSHub
             }
         }
         bool soundSpeedUpdated = true;
+
+        bool isStatistics = false;
+        public bool IsStatistics
+        {
+            get { return isStatistics; }
+            set
+            {
+                if (value)
+                {
+                    statHelper.Clear();
+                    CEP = new AgingValue<double>(4, 300, x => string.Format(CultureInfo.InvariantCulture, "{0:F03} m", x));
+                    DRMS = new AgingValue<double>(4, 300, x => string.Format(CultureInfo.InvariantCulture, "{0:F03} m", x));
+                    DRMS2 = new AgingValue<double>(4, 300, x => string.Format(CultureInfo.InvariantCulture, "{0:F03} m", x));
+                    DRMS3 = new AgingValue<double>(4, 300, x => string.Format(CultureInfo.InvariantCulture, "{0:F03} m", x));
+                }
+
+                isStatistics = value;
+            }
+        }
+
+        public readonly int StatHelperRingSize = 512;
+        List<GeoPoint> statHelper = new List<GeoPoint>();
         
         #endregion
 
         #region Constructor
 
-        public CCore(SerialPortSettings redNodePortSettings, int courseEstimatorFIFOSize, int smoothingFilterFIFOSize)
+        public CCore(SerialPortSettings redNodePortSettings, int courseEstimatorFIFOSize, int smoothingFilterFIFOSize, double resetFilterDistance_m)
         {
             #region Misc.
 
@@ -376,7 +403,7 @@ namespace UGPSHub
             emuPortRDNID = portHashByName[emuPortNameRDN];
 
             crsEstimator = new CourseEstimatorLA2D(courseEstimatorFIFOSize);
-            trkSmoother = new TrackFilter(smoothingFilterFIFOSize);
+            trkSmoother = new TrackFilter(smoothingFilterFIFOSize, resetFilterDistance_m);
 
             #endregion
 
@@ -401,8 +428,7 @@ namespace UGPSHub
             redNodePressure = new AgingValue<double>(2, 15, (x) => string.Format(CultureInfo.InvariantCulture, "{0:F02} mBar", x));
             redNodeDepth = new AgingValue<double>(2, 15, (x) => string.Format(CultureInfo.InvariantCulture, "{0:F02} m", x));
             waterTemperature = new AgingValue<double>(2, 5, (x) => string.Format(CultureInfo.InvariantCulture, "{0:F01} °C", x));
-
-
+            
             redBase1Location = new AgingValue<GeoPoint3D>(2, 5, (x) => string.Format(CultureInfo.InvariantCulture, "LAT: {0:F06}°\r\nLON: {1:F06}°", x.Latitude, x.Longitude));
             redBase2Location = new AgingValue<GeoPoint3D>(2, 5, (x) => string.Format(CultureInfo.InvariantCulture, "LAT: {0:F06}°\r\nLON: {1:F06}°", x.Latitude, x.Longitude));
             redBase3Location = new AgingValue<GeoPoint3D>(2, 5, (x) => string.Format(CultureInfo.InvariantCulture, "LAT: {0:F06}°\r\nLON: {1:F06}°", x.Latitude, x.Longitude));
@@ -429,6 +455,11 @@ namespace UGPSHub
 
                     return sb.ToString();
                 });
+
+            CEP = new AgingValue<double>(4, 300, x => string.Format(CultureInfo.InvariantCulture, "{0:F03} m", x));
+            DRMS = new AgingValue<double>(4, 300, x => string.Format(CultureInfo.InvariantCulture, "{0:F03} m", x));
+            DRMS2 = new AgingValue<double>(4, 300, x => string.Format(CultureInfo.InvariantCulture, "{0:F03} m", x));
+            DRMS3 = new AgingValue<double>(4, 300, x => string.Format(CultureInfo.InvariantCulture, "{0:F03} m", x));
 
             #endregion
 
@@ -1053,6 +1084,28 @@ namespace UGPSHub
 
                 if (courseToAux.IsInitialized)
                     sb.AppendFormat(CultureInfo.InvariantCulture, "COURSE TO AUX: {0}\r\n", courseToAux);
+            }            
+
+            return sb.ToString();
+        }
+
+        public string GetStatistics()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (isStatistics)
+            {
+                if (CEP.IsInitialized)
+                    sb.AppendFormat("  CEP: {0}\r\n", CEP);
+
+                if (DRMS.IsInitialized)
+                    sb.AppendFormat(" DRMS: {0}\r\n", DRMS);
+
+                if (DRMS2.IsInitialized)
+                    sb.AppendFormat("2DRMS: {0}\r\n", DRMS2);
+
+                if (DRMS3.IsInitialized)
+                    sb.AppendFormat("3DRMS: {0}\r\n", DRMS3);
             }
 
             return sb.ToString();
@@ -1090,6 +1143,24 @@ namespace UGPSHub
         public void Reset()
         {
             trkSmoother.Reset();
+        }
+
+        public void UpdateStat(double lat, double lon)
+        {
+            statHelper.Add(new GeoPoint(lat, lon));
+            if (statHelper.Count > StatHelperRingSize)
+                statHelper.RemoveAt(0);
+
+            var mPoints = Navigation.GCSToLCS(statHelper, Algorithms.WGS84Ellipsoid);
+
+            double sigmax = 0, sigmay = 0;
+            Navigation.GetPointsSTD2D(mPoints, out sigmax, out sigmay);
+
+            CEP.Value = Navigation.CEP(sigmax, sigmay);
+            var drms = Navigation.DRMS(sigmax, sigmay);
+            DRMS.Value = drms;
+            DRMS2.Value = drms * 2;
+            DRMS3.Value = drms * 3;
         }
 
         #endregion
@@ -1163,6 +1234,11 @@ namespace UGPSHub
                             crs, double.NaN));
 
                     redNodeLocationFlt.Value = new GeoPoint3D(smPoint.Latitude, smPoint.Longitude, -e.OrthometricHeight);
+
+                    if (isStatistics)
+                    {
+                        UpdateStat(smPoint.Latitude, smPoint.Longitude);
+                    }
 
                     outLat = smPoint.Latitude;
                     outLon = smPoint.Longitude;
@@ -1300,5 +1376,4 @@ namespace UGPSHub
 
         #endregion
     }
-
 }

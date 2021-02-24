@@ -45,6 +45,7 @@
             this.utilsDeviceInfoBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.utilsDeviceInfoQueryBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.utilsDeviceInfoViewBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.utilsSessionResetBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.utilsLogClearAllEntriesBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -58,14 +59,18 @@
             this.isAutoScreenshotBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.markCurrentPositionBtn = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tracksToFitCbx = new System.Windows.Forms.ToolStripComboBox();
             this.mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.connectionStatusLbl = new System.Windows.Forms.ToolStripStatusLabel();
-            this.geoPlot = new UCNLUI.Controls.GeoPlotCartesian();
             this.secondaryStatusStrip = new System.Windows.Forms.StatusStrip();
             this.rerExeededFlagLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.buoysStatusLbl = new System.Windows.Forms.ToolStripStatusLabel();
-            this.utilsSessionResetBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.geoPlot = new UCNLUI.Controls.uOSMGeoPlot();
+            this.isHistoryVisibleBtn = new System.Windows.Forms.ToolStripButton();
+            this.isStatisticsBtn = new System.Windows.Forms.ToolStripButton();
             this.mainToolStrip.SuspendLayout();
             this.secondaryToolStrip.SuspendLayout();
             this.mainStatusStrip.SuspendLayout();
@@ -219,6 +224,13 @@
             this.utilsDeviceInfoViewBtn.Visible = false;
             this.utilsDeviceInfoViewBtn.Click += new System.EventHandler(this.utilsDeviceInfoViewBtn_Click);
             // 
+            // utilsSessionResetBtn
+            // 
+            this.utilsSessionResetBtn.Name = "utilsSessionResetBtn";
+            this.utilsSessionResetBtn.Size = new System.Drawing.Size(306, 32);
+            this.utilsSessionResetBtn.Text = "SESSION RESET";
+            this.utilsSessionResetBtn.Click += new System.EventHandler(this.utilsSessionResetBtn_Click);
+            // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
@@ -287,7 +299,12 @@
             this.secondaryToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.isAutoScreenshotBtn,
             this.toolStripSeparator6,
-            this.markCurrentPositionBtn});
+            this.markCurrentPositionBtn,
+            this.toolStripSeparator10,
+            this.toolStripLabel1,
+            this.tracksToFitCbx,
+            this.isHistoryVisibleBtn,
+            this.isStatisticsBtn});
             this.secondaryToolStrip.Location = new System.Drawing.Point(0, 35);
             this.secondaryToolStrip.Name = "secondaryToolStrip";
             this.secondaryToolStrip.Size = new System.Drawing.Size(919, 30);
@@ -320,6 +337,25 @@
             this.markCurrentPositionBtn.Text = "MARK POSITION";
             this.markCurrentPositionBtn.Click += new System.EventHandler(this.markCurrentPositionBtn_Click);
             // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 30);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(131, 27);
+            this.toolStripLabel1.Text = "TRACKS TO FIT";
+            // 
+            // tracksToFitCbx
+            // 
+            this.tracksToFitCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tracksToFitCbx.DropDownWidth = 200;
+            this.tracksToFitCbx.Name = "tracksToFitCbx";
+            this.tracksToFitCbx.Size = new System.Drawing.Size(200, 30);
+            this.tracksToFitCbx.SelectedIndexChanged += new System.EventHandler(this.tracksToFitCbx_SelectedIndexChanged);
+            // 
             // mainStatusStrip
             // 
             this.mainStatusStrip.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -336,27 +372,6 @@
             this.connectionStatusLbl.Name = "connectionStatusLbl";
             this.connectionStatusLbl.Size = new System.Drawing.Size(15, 23);
             this.connectionStatusLbl.Text = ".";
-            // 
-            // geoPlot
-            // 
-            this.geoPlot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.geoPlot.AxisLabelsColor = System.Drawing.Color.LightGray;
-            this.geoPlot.AxisLabelsFntSize = 4;
-            this.geoPlot.BackColor = System.Drawing.Color.Black;
-            this.geoPlot.CourseLineLength = 200;
-            this.geoPlot.GridColor = System.Drawing.Color.LightGray;
-            this.geoPlot.HistoryLinesColor = System.Drawing.Color.PaleGreen;
-            this.geoPlot.HistoryLinesFntSize = 3;
-            this.geoPlot.LeftUpperCornerText = "";
-            this.geoPlot.Location = new System.Drawing.Point(13, 70);
-            this.geoPlot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.geoPlot.MiscFntSize = 5;
-            this.geoPlot.MiscInfoColor = System.Drawing.Color.Yellow;
-            this.geoPlot.Name = "geoPlot";
-            this.geoPlot.Size = new System.Drawing.Size(893, 388);
-            this.geoPlot.TabIndex = 3;
             // 
             // secondaryStatusStrip
             // 
@@ -392,20 +407,64 @@
             this.buoysStatusLbl.Size = new System.Drawing.Size(14, 23);
             this.buoysStatusLbl.Text = ".";
             // 
-            // utilsSessionResetBtn
+            // geoPlot
             // 
-            this.utilsSessionResetBtn.Name = "utilsSessionResetBtn";
-            this.utilsSessionResetBtn.Size = new System.Drawing.Size(306, 32);
-            this.utilsSessionResetBtn.Text = "SESSION RESET";
-            this.utilsSessionResetBtn.Click += new System.EventHandler(this.utilsSessionResetBtn_Click);
+            this.geoPlot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.geoPlot.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.geoPlot.HistoryLinesNumber = 5;
+            this.geoPlot.HistoryTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.geoPlot.HistoryTextFont = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.geoPlot.HistoryVisible = true;
+            this.geoPlot.LeftUpperText = null;
+            this.geoPlot.LeftUpperTextColor = System.Drawing.Color.Black;
+            this.geoPlot.LeftUpperTextFont = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.geoPlot.LegendFont = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.geoPlot.Location = new System.Drawing.Point(13, 70);
+            this.geoPlot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.geoPlot.MaxHistoryLineLength = 127;
+            this.geoPlot.MeasurementLineColor = System.Drawing.Color.Black;
+            this.geoPlot.MeasurementTextBgColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.geoPlot.MeasurementTextColor = System.Drawing.Color.Black;
+            this.geoPlot.MeasurementTextFont = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.geoPlot.Name = "geoPlot";
+            this.geoPlot.Padding = new System.Windows.Forms.Padding(14, 18, 14, 18);
+            this.geoPlot.ScaleLineColor = System.Drawing.SystemColors.ControlText;
+            this.geoPlot.ScaleLineFont = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.geoPlot.Size = new System.Drawing.Size(893, 382);
+            this.geoPlot.TabIndex = 5;
+            this.geoPlot.TextBackgroundColor = System.Drawing.Color.Empty;
+            // 
+            // isHistoryVisibleBtn
+            // 
+            this.isHistoryVisibleBtn.Checked = true;
+            this.isHistoryVisibleBtn.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.isHistoryVisibleBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.isHistoryVisibleBtn.Image = ((System.Drawing.Image)(resources.GetObject("isHistoryVisibleBtn.Image")));
+            this.isHistoryVisibleBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.isHistoryVisibleBtn.Name = "isHistoryVisibleBtn";
+            this.isHistoryVisibleBtn.Size = new System.Drawing.Size(85, 27);
+            this.isHistoryVisibleBtn.Text = "HISTORY";
+            this.isHistoryVisibleBtn.Click += new System.EventHandler(this.isHistoryVisibleBtn_Click);
+            // 
+            // isStatisticsBtn
+            // 
+            this.isStatisticsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.isStatisticsBtn.Image = ((System.Drawing.Image)(resources.GetObject("isStatisticsBtn.Image")));
+            this.isStatisticsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.isStatisticsBtn.Name = "isStatisticsBtn";
+            this.isStatisticsBtn.Size = new System.Drawing.Size(105, 27);
+            this.isStatisticsBtn.Text = "STATISTICS";
+            this.isStatisticsBtn.Click += new System.EventHandler(this.isStatisticsBtn_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 28F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(919, 513);
-            this.Controls.Add(this.secondaryStatusStrip);
             this.Controls.Add(this.geoPlot);
+            this.Controls.Add(this.secondaryStatusStrip);
             this.Controls.Add(this.mainStatusStrip);
             this.Controls.Add(this.secondaryToolStrip);
             this.Controls.Add(this.mainToolStrip);
@@ -454,7 +513,6 @@
         private System.Windows.Forms.ToolStripButton isAutoScreenshotBtn;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripStatusLabel connectionStatusLbl;
-        private UCNLUI.Controls.GeoPlotCartesian geoPlot;
         private System.Windows.Forms.ToolStripButton markCurrentPositionBtn;
         private System.Windows.Forms.ToolStripMenuItem utilsDeviceInfoBtn;
         private System.Windows.Forms.ToolStripMenuItem utilsDeviceInfoQueryBtn;
@@ -466,6 +524,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem utilsTrackFilteringBtn;
         private System.Windows.Forms.ToolStripMenuItem utilsSessionResetBtn;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripComboBox tracksToFitCbx;
+        private UCNLUI.Controls.uOSMGeoPlot geoPlot;
+        private System.Windows.Forms.ToolStripButton isHistoryVisibleBtn;
+        private System.Windows.Forms.ToolStripButton isStatisticsBtn;
 
     }
 }

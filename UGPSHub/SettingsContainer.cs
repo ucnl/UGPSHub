@@ -28,7 +28,14 @@ namespace UGPSHub
         public int TrackFilterFIFOSize;
 
         public int NumberOfPointsToShow;
-                
+
+        public bool IsScreenshotsNamingByTime;
+
+        public double MaxDistToResetTrackSmoother_m;
+
+        public string[] TileServers;
+
+
         #endregion
 
         #region Methods
@@ -55,6 +62,17 @@ namespace UGPSHub
             TrackFilterFIFOSize = 4;
 
             NumberOfPointsToShow = 256;
+
+            IsScreenshotsNamingByTime = true;
+
+            MaxDistToResetTrackSmoother_m = 100;
+
+            TileServers = new string[]
+            {
+                "https://a.tile.openstreetmap.org",
+                "https://b.tile.openstreetmap.org",
+                "https://c.tile.openstreetmap.org"
+            };
         }
 
         #endregion

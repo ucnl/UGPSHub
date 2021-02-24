@@ -102,6 +102,11 @@ namespace UGPSHub
             set { UIUtils.TrySetNEditValue(trackViewFIFOSizeEdit, value); }
         }
 
+        bool screenShotsNamesByTime
+        {
+            get { return isScreenshotsNamingByTime.Checked; }
+            set { isScreenshotsNamingByTime.Checked = value; }
+        }
 
         public SettingsContainer Value
         {
@@ -130,6 +135,8 @@ namespace UGPSHub
                 result.TrackFilterFIFOSize = trackFilterFIFOSize;
                 result.NumberOfPointsToShow = trackViewFIFOSize;
 
+                result.IsScreenshotsNamingByTime = screenShotsNamesByTime;
+
                 return result;
             }
             set
@@ -154,6 +161,8 @@ namespace UGPSHub
                 crsEstimatorFIFOSize = value.CourseEstimatorFIFOSize;
                 trackFilterFIFOSize = value.TrackFilterFIFOSize;
                 trackViewFIFOSize = value.NumberOfPointsToShow;
+
+                screenShotsNamesByTime = value.IsScreenshotsNamingByTime;
             }
         }
 
