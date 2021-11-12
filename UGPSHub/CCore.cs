@@ -610,11 +610,11 @@ namespace UGPSHub
             if (isValid) RMCvString = "Valid";
             else RMCvString = "Invalid";
 
-            if (lat_deg > 0) latCardinal = "North";
-            else latCardinal = "South";
+            if (lat_deg > 0) latCardinal = "N";
+            else latCardinal = "S";
 
-            if (lon_deg > 0) lonCardinal = "East";
-            else lonCardinal = "West";
+            if (lon_deg > 0) lonCardinal = "E";
+            else lonCardinal = "W";
 
             StringBuilder emuString = new StringBuilder();
 
