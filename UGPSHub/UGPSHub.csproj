@@ -42,20 +42,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UCNLLibs\UCNLDrivers\UCNLDrivers\bin\Release\UCNLDrivers.dll</HintPath>
     </Reference>
-    <Reference Include="UCNLKML">
+    <Reference Include="UCNLKML, Version=1.0.7160.21192, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UCNLLibs\UCNLKML\UCNLKML\bin\Release\UCNLKML.dll</HintPath>
     </Reference>
-    <Reference Include="UCNLNav">
+    <Reference Include="UCNLNav, Version=1.0.7838.28382, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UCNLLibs\UCNLNav\UCNLNav\bin\Release\UCNLNav.dll</HintPath>
     </Reference>
-    <Reference Include="UCNLNMEA">
+    <Reference Include="UCNLNMEA, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UCNLLibs\UCNLNMEA\UCNLNMEA\bin\Release\UCNLNMEA.dll</HintPath>
     </Reference>
-    <Reference Include="UCNLPhysics">
+    <Reference Include="UCNLPhysics, Version=1.0.7406.2597, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UCNLLibs\UCNLPhysics\UCNLPhysics\bin\Release\UCNLPhysics.dll</HintPath>
-    </Reference>
-    <Reference Include="UCNLSalinity">
-      <HintPath>..\..\..\UCNLLibs\UCNLSalinity\UCNLSalinity\bin\Release\UCNLSalinity.dll</HintPath>
     </Reference>
     <Reference Include="UCNLUI, Version=1.0.7709.43188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -26,8 +26,7 @@ namespace UGPSHub
         TSLogProvider logger;
         SimpleSettingsProviderXML<SettingsContainer> settingsProvider;
         uOSMTileProvider tProvider;
-
-
+        
         string settingsFileName;
         string logPath;
         string logFileName;
@@ -47,6 +46,20 @@ namespace UGPSHub
                 {
                     tracksChanged = value;
                     InvokeSetEnabledState(mainToolStrip, trackBtn, tracksChanged);
+                }
+            }
+        }
+
+        bool uPositionValid = false;
+        bool UPositionValid
+        {
+            get { return uPositionValid; }
+            set
+            {
+                if (value != uPositionValid)
+                {
+                    uPositionValid = value;
+                    InvokeSetEnabledState(mainToolStrip, markCurrentPositionBtn, uPositionValid);
                 }
             }
         }
@@ -200,6 +213,8 @@ namespace UGPSHub
             core.SystemUpdateEvent += (o, e) =>
                 {
                     StringBuilder sb = new StringBuilder();
+
+                    UPositionValid = core.UPositionValid;
 
                     var nText = core.GetNavigationInfo();
                     if (!string.IsNullOrEmpty(nText))
@@ -828,8 +843,18 @@ namespace UGPSHub
         {
             using (AboutBox aDialog = new AboutBox())
             {
-                aDialog.ApplyAssembly(Assembly.GetExecutingAssembly());
+#if IS_DIVENET
+                aDialog.IsBeringia = true;
+                aDialog.Weblink = "www.divenetgps.com";
+
+#else
+
+                aDialog.IsBeringia = false;
                 aDialog.Weblink = "www.unavlab.com";
+
+#endif
+                aDialog.ApplyAssembly(Assembly.GetExecutingAssembly());
+                
                 aDialog.ShowDialog();
             }
         }
@@ -869,6 +894,12 @@ namespace UGPSHub
         {
             geoPlot.HistoryVisible = !geoPlot.HistoryVisible;
             isHistoryVisibleBtn.Checked = geoPlot.HistoryVisible;
+        }
+
+        private void isLegendVisibleBtn_Click(object sender, EventArgs e)
+        {
+            geoPlot.LegendVisible = !geoPlot.LegendVisible;
+            isLegendVisibleBtn.Checked = geoPlot.LegendVisible;
         }
 
         private void isStatisticsBtn_Click(object sender, EventArgs e)
@@ -932,7 +963,7 @@ namespace UGPSHub
             logger.Flush();
         }        
 
-        #endregion                
+        #endregion        
 
         #endregion        
 

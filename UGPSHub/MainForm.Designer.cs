@@ -62,6 +62,8 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tracksToFitCbx = new System.Windows.Forms.ToolStripComboBox();
+            this.isHistoryVisibleBtn = new System.Windows.Forms.ToolStripButton();
+            this.isStatisticsBtn = new System.Windows.Forms.ToolStripButton();
             this.mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.connectionStatusLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.secondaryStatusStrip = new System.Windows.Forms.StatusStrip();
@@ -69,8 +71,7 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.buoysStatusLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.geoPlot = new UCNLUI.Controls.uOSMGeoPlot();
-            this.isHistoryVisibleBtn = new System.Windows.Forms.ToolStripButton();
-            this.isStatisticsBtn = new System.Windows.Forms.ToolStripButton();
+            this.isLegendVisibleBtn = new System.Windows.Forms.ToolStripButton();
             this.mainToolStrip.SuspendLayout();
             this.secondaryToolStrip.SuspendLayout();
             this.mainStatusStrip.SuspendLayout();
@@ -92,7 +93,7 @@
             this.infoBtn});
             this.mainToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mainToolStrip.Name = "mainToolStrip";
-            this.mainToolStrip.Size = new System.Drawing.Size(919, 35);
+            this.mainToolStrip.Size = new System.Drawing.Size(1043, 35);
             this.mainToolStrip.TabIndex = 0;
             this.mainToolStrip.Text = "toolStrip1";
             // 
@@ -304,10 +305,11 @@
             this.toolStripLabel1,
             this.tracksToFitCbx,
             this.isHistoryVisibleBtn,
+            this.isLegendVisibleBtn,
             this.isStatisticsBtn});
             this.secondaryToolStrip.Location = new System.Drawing.Point(0, 35);
             this.secondaryToolStrip.Name = "secondaryToolStrip";
-            this.secondaryToolStrip.Size = new System.Drawing.Size(919, 30);
+            this.secondaryToolStrip.Size = new System.Drawing.Size(1043, 30);
             this.secondaryToolStrip.TabIndex = 1;
             this.secondaryToolStrip.Text = "toolStrip2";
             // 
@@ -356,6 +358,28 @@
             this.tracksToFitCbx.Size = new System.Drawing.Size(200, 30);
             this.tracksToFitCbx.SelectedIndexChanged += new System.EventHandler(this.tracksToFitCbx_SelectedIndexChanged);
             // 
+            // isHistoryVisibleBtn
+            // 
+            this.isHistoryVisibleBtn.Checked = true;
+            this.isHistoryVisibleBtn.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.isHistoryVisibleBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.isHistoryVisibleBtn.Image = ((System.Drawing.Image)(resources.GetObject("isHistoryVisibleBtn.Image")));
+            this.isHistoryVisibleBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.isHistoryVisibleBtn.Name = "isHistoryVisibleBtn";
+            this.isHistoryVisibleBtn.Size = new System.Drawing.Size(85, 27);
+            this.isHistoryVisibleBtn.Text = "HISTORY";
+            this.isHistoryVisibleBtn.Click += new System.EventHandler(this.isHistoryVisibleBtn_Click);
+            // 
+            // isStatisticsBtn
+            // 
+            this.isStatisticsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.isStatisticsBtn.Image = ((System.Drawing.Image)(resources.GetObject("isStatisticsBtn.Image")));
+            this.isStatisticsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.isStatisticsBtn.Name = "isStatisticsBtn";
+            this.isStatisticsBtn.Size = new System.Drawing.Size(105, 27);
+            this.isStatisticsBtn.Text = "STATISTICS";
+            this.isStatisticsBtn.Click += new System.EventHandler(this.isStatisticsBtn_Click);
+            // 
             // mainStatusStrip
             // 
             this.mainStatusStrip.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -363,7 +387,7 @@
             this.connectionStatusLbl});
             this.mainStatusStrip.Location = new System.Drawing.Point(0, 485);
             this.mainStatusStrip.Name = "mainStatusStrip";
-            this.mainStatusStrip.Size = new System.Drawing.Size(919, 28);
+            this.mainStatusStrip.Size = new System.Drawing.Size(1043, 28);
             this.mainStatusStrip.TabIndex = 2;
             this.mainStatusStrip.Text = "statusStrip1";
             // 
@@ -382,7 +406,7 @@
             this.buoysStatusLbl});
             this.secondaryStatusStrip.Location = new System.Drawing.Point(0, 457);
             this.secondaryStatusStrip.Name = "secondaryStatusStrip";
-            this.secondaryStatusStrip.Size = new System.Drawing.Size(919, 28);
+            this.secondaryStatusStrip.Size = new System.Drawing.Size(1043, 28);
             this.secondaryStatusStrip.TabIndex = 4;
             this.secondaryStatusStrip.Text = "statusStrip1";
             // 
@@ -420,7 +444,9 @@
             this.geoPlot.LeftUpperText = null;
             this.geoPlot.LeftUpperTextColor = System.Drawing.Color.Black;
             this.geoPlot.LeftUpperTextFont = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.geoPlot.LeftUpperTextVisible = true;
             this.geoPlot.LegendFont = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.geoPlot.LegendVisible = true;
             this.geoPlot.Location = new System.Drawing.Point(13, 70);
             this.geoPlot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.geoPlot.MaxHistoryLineLength = 127;
@@ -432,37 +458,27 @@
             this.geoPlot.Padding = new System.Windows.Forms.Padding(14, 18, 14, 18);
             this.geoPlot.ScaleLineColor = System.Drawing.SystemColors.ControlText;
             this.geoPlot.ScaleLineFont = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.geoPlot.Size = new System.Drawing.Size(893, 382);
+            this.geoPlot.Size = new System.Drawing.Size(1017, 382);
             this.geoPlot.TabIndex = 5;
             this.geoPlot.TextBackgroundColor = System.Drawing.Color.Empty;
             // 
-            // isHistoryVisibleBtn
+            // isLegendVisibleBtn
             // 
-            this.isHistoryVisibleBtn.Checked = true;
-            this.isHistoryVisibleBtn.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.isHistoryVisibleBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.isHistoryVisibleBtn.Image = ((System.Drawing.Image)(resources.GetObject("isHistoryVisibleBtn.Image")));
-            this.isHistoryVisibleBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.isHistoryVisibleBtn.Name = "isHistoryVisibleBtn";
-            this.isHistoryVisibleBtn.Size = new System.Drawing.Size(85, 27);
-            this.isHistoryVisibleBtn.Text = "HISTORY";
-            this.isHistoryVisibleBtn.Click += new System.EventHandler(this.isHistoryVisibleBtn_Click);
-            // 
-            // isStatisticsBtn
-            // 
-            this.isStatisticsBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.isStatisticsBtn.Image = ((System.Drawing.Image)(resources.GetObject("isStatisticsBtn.Image")));
-            this.isStatisticsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.isStatisticsBtn.Name = "isStatisticsBtn";
-            this.isStatisticsBtn.Size = new System.Drawing.Size(105, 27);
-            this.isStatisticsBtn.Text = "STATISTICS";
-            this.isStatisticsBtn.Click += new System.EventHandler(this.isStatisticsBtn_Click);
+            this.isLegendVisibleBtn.Checked = true;
+            this.isLegendVisibleBtn.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.isLegendVisibleBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.isLegendVisibleBtn.Image = ((System.Drawing.Image)(resources.GetObject("isLegendVisibleBtn.Image")));
+            this.isLegendVisibleBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.isLegendVisibleBtn.Name = "isLegendVisibleBtn";
+            this.isLegendVisibleBtn.Size = new System.Drawing.Size(79, 27);
+            this.isLegendVisibleBtn.Text = "LEGEND";
+            this.isLegendVisibleBtn.Click += new System.EventHandler(this.isLegendVisibleBtn_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 28F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(919, 513);
+            this.ClientSize = new System.Drawing.Size(1043, 513);
             this.Controls.Add(this.geoPlot);
             this.Controls.Add(this.secondaryStatusStrip);
             this.Controls.Add(this.mainStatusStrip);
@@ -530,6 +546,7 @@
         private UCNLUI.Controls.uOSMGeoPlot geoPlot;
         private System.Windows.Forms.ToolStripButton isHistoryVisibleBtn;
         private System.Windows.Forms.ToolStripButton isStatisticsBtn;
+        private System.Windows.Forms.ToolStripButton isLegendVisibleBtn;
 
     }
 }

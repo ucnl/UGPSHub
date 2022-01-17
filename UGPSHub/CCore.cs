@@ -378,6 +378,11 @@ namespace UGPSHub
 
         public readonly int StatHelperRingSize = 512;
         List<GeoPoint> statHelper = new List<GeoPoint>();
+
+        public bool UPositionValid
+        {
+            get { return redNodeLocationFlt.IsInitialized; }
+        }
         
         #endregion
 
@@ -639,12 +644,6 @@ namespace UGPSHub
             #endregion
 
             #region GGA
-
-            if (lat_deg > 0) latCardinal = "N";
-            else latCardinal = "S";
-
-            if (lon_deg > 0) lonCardinal = "E";
-            else lonCardinal = "W";
 
             emuString.Append(NMEAParser.BuildSentence(TalkerIdentifiers.GP,
                 SentenceIdentifiers.GGA,
