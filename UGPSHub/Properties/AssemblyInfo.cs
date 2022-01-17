@@ -2,16 +2,16 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+
 [assembly: AssemblyTitle("UGPSHub")]
-[assembly: AssemblyDescription("RedWAVE/DiveNET GPS - Underwater GPS host application.\n\n" +
-                               "Latest release: https://api.github.com/repos/ucnl/UGPSHub/zipball \n" +
-                               "Support: mailto:support@unavlab.com\n\n" +
-                               "More information about RedWAVE/DiveNET GPS Underwater GPS:\n" +
-                               "English: https://docs.unavlab.com/navigation_and_tracking_systems_en.html#redwave\n" +
-                               "Russian: https://docs.unavlab.com/navigation_and_tracking_systems_ru.html#redwave\n\n" +
+
+#if IS_DIVENET
+
+[assembly: AssemblyDescription("DiveNET: GPS Pro - Underwater GPS host application.\n\n" +
+                               "Latest release: https://github.com/ucnl/UGPSHub/releases/download/1.0-divenet/UGPSHub_DiveNET.zip \n" +
+                               "Support: mailto:support@divenetgps.com\n\n" +
+                               "More information about DiveNET GPS Underwater GPS:\n" +
+                               "https://docs.unavlab.com/navigation_and_tracking_systems_en.html#redwave\n\n" +                               
                                "Project source code:\n" +
                                "https://github.com/ucnl/UGPSHub\n\n" +
                                "This application is 100% open-source, and based on our projects:\n" +                               
@@ -24,11 +24,38 @@ using System.Runtime.InteropServices;
                                )]
 
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Beringia enterpises")]
+[assembly: AssemblyProduct("UGPSHub")]
+[assembly: AssemblyCopyright("Copyright © Beringia enterprises, 2021")]
+[assembly: AssemblyTrademark("DiveNET")]
+[assembly: AssemblyCulture("")]
+
+#else
+
+[assembly: AssemblyDescription("DiveNET GPS/RedWave - Underwater GPS host application.\n\n" +
+                               "Latest release: https://api.github.com/repos/ucnl/UGPSHub/zipball \n" +
+                               "Support: mailto:support@unavlab.com\n\n" +
+                               "More information about DiveNET GPS/RedWave Underwater GPS:\n" +
+                               "https://docs.unavlab.com/navigation_and_tracking_systems_en.html#redwave\n\n" +                               
+                               "Project source code:\n" +
+                               "https://github.com/ucnl/UGPSHub\n\n" +
+                               "This application is 100% open-source, and based on our projects:\n" +
+                               "https://github.com/ucnl/UCNLNav\n" +
+                               "https://github.com/ucnl/UCNLPhysics\n" +
+                               "https://github.com/ucnl/UCNLNMEA\n" +
+                               "https://github.com/ucnl/UCNLKML\n" +
+                               "https://github.com/ucnl/UCNLDrivers\n" +
+                               "https://github.com/ucnl/UCNLUI"
+                               )]
+
+[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Underwater communication & navigation laboratory, LLC")]
 [assembly: AssemblyProduct("UGPSHub")]
-[assembly: AssemblyCopyright("Copyright © Underwater communication & navigation laboratory, 2020")]
+[assembly: AssemblyCopyright("Copyright © Underwater communication & navigation laboratory, 2021")]
 [assembly: AssemblyTrademark("UC&NL")]
 [assembly: AssemblyCulture("")]
+
+#endif
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
