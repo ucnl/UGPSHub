@@ -1038,14 +1038,14 @@ namespace UGPSHub
             {
                 var splits = emuMsg.Split(charSeps);
 
-                if (splits[1].Contains("INFO") &&
-                    (splits[4] == ">>"))
+                if (splits[0].Contains("INFO") &&
+                    (splits[3] == ">>"))
                 {
-                    var nmeaSnt = splits[5];
+                    var nmeaSnt = splits[4];
                     if (!nmeaSnt.EndsWith(NMEAParser.SentenceEndDelimiter))
                         nmeaSnt = nmeaSnt + NMEAParser.SentenceEndDelimiter;
 
-                    var sourceIDStr = splits[3].Trim(trimChars);
+                    var sourceIDStr = splits[2].Trim(trimChars);
                     PortType sourcePType = (PortType)Enum.Parse(typeof(PortType), sourceIDStr);
 
                     if (sourcePType == PortType.RedNODE)

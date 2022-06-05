@@ -26,6 +26,8 @@ namespace UGPSHub
         TSLogProvider logger;
         SimpleSettingsProviderXML<SettingsContainer> settingsProvider;
         uOSMTileProvider tProvider;
+
+        LogPlayer lPlayer;
         
         string settingsFileName;
         string logPath;
@@ -267,6 +269,36 @@ namespace UGPSHub
                     DataBits.dataBits8,
                     System.IO.Ports.StopBits.One,
                     System.IO.Ports.Handshake.None));
+
+            #endregion
+
+            #region lPlayer
+
+            lPlayer = new LogPlayer();
+            lPlayer.NewLogLineHandler += (o, e) =>
+            {
+                core.Emulate(e.Line);
+            };
+            lPlayer.LogPlaybackFinishedHandler += (o, e) =>
+            {                
+                if (InvokeRequired)
+                {
+                    Invoke((MethodInvoker)delegate
+                    {
+                        settingsBtn.Enabled = true;
+                        connectionBtn.Enabled = true;
+                        logPlaybackBtn.Text = "▶ Playback...";
+                        MessageBox.Show(string.Format("Log file \"{0}\" playback is finished", lPlayer.LogFileName), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    });
+                }
+                else
+                {
+                    settingsBtn.Enabled = true;
+                    connectionBtn.Enabled = true;
+                    logPlaybackBtn.Text = "▶ Playback...";
+                    MessageBox.Show(string.Format("Log file \"{0}\" playback is finished", lPlayer.LogFileName), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            };
 
             #endregion
         }
@@ -653,16 +685,28 @@ namespace UGPSHub
 
         private void logPlaybackBtn_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog oDialog = new OpenFileDialog())
+            if (lPlayer.IsRunning)
             {
-                oDialog.Title = "Select a LOG file to analyze...";
-                oDialog.DefaultExt = "log";
-                oDialog.Filter = "LOG files (*.log)|*.log";
-                oDialog.InitialDirectory = logPath;
-
-                if (oDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (MessageBox.Show("Log playback is currently active, do you want to stop abort it?",
+                    "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    lPlayer.RequestToStop();
+            }
+            else
+            {
+                using (OpenFileDialog oDialog = new OpenFileDialog())
                 {
-                    ProcessAnalyzeLog(oDialog.FileName);
+                    oDialog.Title = "Select a log file to playback...";
+                    oDialog.DefaultExt = "log";
+                    oDialog.Filter = "Log files (*.log)|*.log";
+
+                    if (oDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        lPlayer.Playback(oDialog.FileName);
+
+                        logPlaybackBtn.Text = "⏹ Stop playback";
+                        settingsBtn.Enabled = false;
+                        connectionBtn.Enabled = false;
+                    }
                 }
             }
         }
